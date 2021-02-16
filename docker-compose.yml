@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  my-rabbit:
+    image: rabbitmq
+    ports:
+      - "5672:5672"
+  order-api:
+    image: node-order-api
+    ports:
+      - "3001:3001"
+    depends_on:
+      - my-rabbit
+  notification-api:
+    image: node-notify-api
+    environment:
+      TWILIO_ACCOUNT_SID: AC73b074be8d9ade5a535e52691e523e7a
+      TWILIO_AUTH_TOKEN: e39d720170614bbd16e69fe3de25418e
+    ports:
+      - "3002:3002"
+    depends_on:
+      - my-rabbit
+  shopping-frontend:
+    image: shopping-frontend
+    ports:
+      - "3000:3000"
